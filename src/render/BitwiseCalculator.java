@@ -10,14 +10,14 @@ public class BitwiseCalculator {
 
     public static int  calculateBitwize(char c,Settings settings){
         BufferedImage bi  = new BufferedImage(Settings.getCharImageSize(),Settings.getCharImageSize(),BufferedImage.TYPE_INT_RGB);
-        Graphics g = bi.createGraphics();
+        Graphics g = bi.getGraphics();
         drawCenterChar(g, c);
 
         return calculateBitwize(bi,settings);
     }
     public static int  calculateBitwize(char c,double tolerance){
         BufferedImage bi  = new BufferedImage(Settings.getCharImageSize(),Settings.getCharImageSize(),BufferedImage.TYPE_INT_RGB);
-        Graphics g = bi.createGraphics();
+        Graphics g = bi.getGraphics();
         drawCenterChar(g, c);
 
         return calculateBitwize(bi,tolerance);
@@ -37,13 +37,14 @@ public class BitwiseCalculator {
 
     public static int calculateBitwize(BufferedImage bi, double averageLuminance,double tolerance ){
         int value=0;
+        int index=0;
         for(int x=0;x<Settings.getCharImageSize();x+=Settings.getPRECISION()){
             for(int y=0;y<Settings.getCharImageSize();y+=Settings.getPRECISION()){
                 double luminance = LuminanceCalculator.calculateLuminance(bi.getSubimage(x,y,Settings.getPRECISION(),Settings.getPRECISION()));
-                if(Math.abs(luminance-averageLuminance)/averageLuminance<tolerance){
-                    int index =(x+y)/Settings.getPRECISION();
+                if(Math.abs(luminance-averageLuminance)/averageLuminance>tolerance){
                     value = value | 1 << index;
                 }
+                index++;
             }
         }
 

@@ -4,15 +4,14 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class ImagePartProcessor extends Thread{
-    private BufferedImage image;
+    protected BufferedImage image;
     private int xStart;
     private int yStart;
     private int xLength;
     private int yLength;
-    private BufferedImage finalImage;
-    private Settings settings;
+    protected BufferedImage finalImage;
+    protected Settings settings;
     private long pixesRendered = 0;
-    private CharacterSet characterSet;
 
     public ImagePartProcessor(BufferedImage bi,BufferedImage finalImg,int x,int y,int xl,int yl,Settings s){
         image=bi;
@@ -22,26 +21,24 @@ public class ImagePartProcessor extends Thread{
         yLength=yl;
         finalImage = finalImg;
         this.settings = s;
-        this.characterSet = s.getCharacterSet();
     }
 
     public void run(){
         processImagePart();
     }
 
-    private void processImagePart(){
-
-        Graphics g = finalImage.createGraphics();
+    protected void processImagePart(){
+        Graphics g = finalImage.getGraphics();
         g.setFont(Settings.getFONT());
         //if(useColor)
         g.setColor(Color.black);
 //		else
 //			g.setColor(Color.white);
-        g.fillRect(0, 0, finalImage.getWidth(), finalImage.getHeight());
+        g.fillRect(xStart, yStart, xLength, yLength);
         for(int x=xStart;x<xLength;x+=Settings.getCharImageSize()){
             for(int y=yStart;y<yLength;y+=Settings.getCharImageSize()){
                 try{
-                    int value=0;
+                    int value;
                     if(settings.isUseColor()){
                         Color avg = getAverageColor(image.getSubimage(x, y, Settings.getCharImageSize(), Settings.getCharImageSize()));
                         value = BitwiseCalculator.calculateBitwize(image.getSubimage(x, y, Settings.getCharImageSize(), Settings.getCharImageSize()),settings);
@@ -70,9 +67,10 @@ public class ImagePartProcessor extends Thread{
                         g.setColor(Color.white);
                     }
 
-                    char c = settings.getCharacterSet().getMatch(value);
-                    if(value!=0)
-                        g.drawString(""+c, x, y);
+                    drawValue(value,g,x,y);
+
+
+
                     pixesRendered+=Settings.getCharImageSize()*Settings.getCharImageSize();
                 }catch(Exception ex){
 					//ex.printStackTrace();
@@ -81,6 +79,12 @@ public class ImagePartProcessor extends Thread{
             }
         }
 
+    }
+
+    protected void drawValue(int value,Graphics g,int x,int y){
+        char c = settings.getCharacterSet().getMatch(value);
+        if(value!=0)
+            g.drawString(""+c, x, y);
     }
 
     public long getPixesRendered() {
@@ -100,8 +104,7 @@ public class ImagePartProcessor extends Thread{
             }
         }
         int indexCount = bi.getHeight()*bi.getWidth();
-        Color color = new Color(totalRed/indexCount,totalGreen/indexCount,totalBlue/indexCount);
-        return color;
+        return new Color(totalRed/indexCount,totalGreen/indexCount,totalBlue/indexCount);
     }
 
     private boolean getMatch(int RGB,Color c){
@@ -111,9 +114,7 @@ public class ImagePartProcessor extends Thread{
         int green = Math.abs(color.getGreen() - c.getGreen());
         int blue= Math.abs(color.getBlue() - c.getBlue());
         int avgDiff = (red+blue+green)/3;
-        if(avgDiff>10)
-            return false;
-        return true;
+        return avgDiff <= 10;
     }
 
 

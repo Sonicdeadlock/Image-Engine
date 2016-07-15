@@ -3,4 +3,4 @@ bin/
 *.class
 *.swp
 *.iml
-
+*.tsv

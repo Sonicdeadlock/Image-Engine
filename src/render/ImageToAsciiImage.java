@@ -21,7 +21,7 @@ public class ImageToAsciiImage {
     public void renderImages(){
         totalPixes=0;
         pixesRendered=0;
-        ArrayList<File> files = new ArrayList<File>();
+        ArrayList<File> files = new ArrayList<>();
         File new_file=null;
         if(settings.getFile().isDirectory()){
             listFilesForFolder(settings.getFile(), files);
@@ -41,22 +41,22 @@ public class ImageToAsciiImage {
                 e.printStackTrace();
             }
         }
-        for(int i=0;i<files.size();i++){
+        for (File file : files) {
             try {
-                File f = files.get(i);
+                File f = file;
                 BufferedImage bi = ImageIO.read(f);
-                if(bi==null)
+                if (bi == null)
                     continue;
                 BufferedImage finalImage = processImage(bi);
 
-                if(settings.getFile().isDirectory()){
+                if (settings.getFile().isDirectory()) {
                     int dotIndex = f.getName().indexOf(".");
-                    ImageIO.write(finalImage, "png", new File(new_file.getPath()+"/"+f.getName().substring(0, dotIndex)+"_Ascii.png"));
-                    System.out.println(new_file.getPath()+"/"+f.getName().substring(0, dotIndex)+"_Ascii.png");
-                }
-                else{
+                    ImageIO.write(finalImage, "png", new File(new_file.getPath() + "/" + f.getName().substring(0, dotIndex) + "_Ascii.png"));
+                    System.out.println(new_file.getPath() + "/" + f.getName().substring(0, dotIndex) + "_Ascii.png");
+                } else {
                     int dotIndex = f.getPath().indexOf(".");
-                    ImageIO.write(finalImage, "png", new File(f.getPath().substring(0, dotIndex)+"_Ascii.png"));}
+                    ImageIO.write(finalImage, "png", new File(f.getPath().substring(0, dotIndex) + "_Ascii.png"));
+                }
                 //System.out.println(f.getName().substring(0, dotIndex)+"_Ascii.png"+" done");
 
             } catch (IOException e) {
@@ -67,28 +67,43 @@ public class ImageToAsciiImage {
         this.pixesRendered = totalPixes;
     }
     private BufferedImage processImage(BufferedImage bi){
-        BufferedImage finalImage = new BufferedImage(bi.getWidth(),bi.getHeight(),BufferedImage.TYPE_INT_RGB);
+         BufferedImage finalImage = new BufferedImage(bi.getWidth(),bi.getHeight(),BufferedImage.TYPE_INT_RGB);
+
         startImage = bi;
         this.finalImage = finalImage;
-        int threadCount=1;//should be square
-        int sectionLengthCount = (int)Math.sqrt(threadCount);
-        int width = finalImage.getWidth()/sectionLengthCount;
-        int height = finalImage.getHeight()/sectionLengthCount;
-        currentThreads = new ImagePartProcessor[threadCount];
-        for(int x=0;x<sectionLengthCount;x++){
-            for(int y=0;y<sectionLengthCount;y++){
-                currentThreads[x*sectionLengthCount+y]= new ImagePartProcessor(bi,finalImage,x*width,y*height,width,height,settings);
-                currentThreads[x*sectionLengthCount+y].start();
-            }
-        }
-        for(ImagePartProcessor p : currentThreads){
+
+        if(settings.isDebug()){
+            int height = finalImage.getHeight(),
+                    width = finalImage.getWidth();
+            DebugImagePartProcessor debugImageProcessor = new DebugImagePartProcessor(bi,finalImage,0,0,width,height,settings);
+            debugImageProcessor.start();
             try {
-                p.join();
+                debugImageProcessor.join();
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+        }else{
+            int threadCount=1;//should be square
+            int sectionLengthCount = (int)Math.sqrt(threadCount);
+            int width = finalImage.getWidth()/sectionLengthCount;
+            int height = finalImage.getHeight()/sectionLengthCount;
+            currentThreads = new ImagePartProcessor[threadCount];
+            for(int x=0;x<sectionLengthCount;x++){
+                for(int y=0;y<sectionLengthCount;y++){
+                    currentThreads[x*sectionLengthCount+y]= new ImagePartProcessor(bi,finalImage,x*width,y*height,width,height,settings);
+                    currentThreads[x*sectionLengthCount+y].start();
+                }
+            }
+            for(ImagePartProcessor p : currentThreads){
+                try {
+                    p.join();
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
         }
+
         pixesRendered+=finalImage.getWidth()*finalImage.getHeight();
         return finalImage;
     }

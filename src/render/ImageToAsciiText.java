@@ -15,7 +15,7 @@ public class ImageToAsciiText {
         this.settings = settings;
     }
 
-    private  String processText(BufferedImage bi){
+    public String processText(BufferedImage bi){
         StringBuilder sb = new StringBuilder(bi.getHeight()*bi.getWidth()/Settings.getCharImageSize()+bi.getWidth()/Settings.getCharImageSize());
         for(int y=0;y<bi.getHeight();y+=Settings.getCharImageSize()){
             for(int x=0;x<bi.getWidth();x+=Settings.getCharImageSize()){
@@ -58,7 +58,7 @@ public class ImageToAsciiText {
     }
 
     public void renderText(){
-        ArrayList<File> files = new ArrayList<File>();
+        ArrayList<File> files = new ArrayList<>();
         File new_file=null;
         if(settings.getFile().isDirectory()){
             ImageToAsciiImage.listFilesForFolder(settings.getFile(), files);
@@ -109,9 +109,9 @@ public class ImageToAsciiText {
 
         for (int x = 0; x < grid[0].length; x++) {
             boolean isAllBlank = true;
-            for (int y = 0; y < grid.length; y++) {
-                if(grid[y][x]!=' '){
-                    isAllBlank =false;
+            for (char[] aGrid : grid) {
+                if (aGrid[x] != ' ') {
+                    isAllBlank = false;
                 }
             }
 

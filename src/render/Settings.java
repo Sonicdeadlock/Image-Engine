@@ -13,6 +13,24 @@ public class Settings {
     private boolean useColor=false;
     private File file;
     private CharacterSet characterSet;
+    private boolean debug;
+    private boolean debugRender = true;
+
+    public boolean isDebugRender() {
+        return debugRender;
+    }
+
+    public void setDebugRender(boolean debugRender) {
+        this.debugRender = debugRender;
+    }
+
+    public boolean isDebug() {
+        return debug;
+    }
+
+    public void setDebug(boolean debug) {
+        this.debug = debug;
+    }
 
     public Settings(File file, double tolerance, int charRange, boolean useColor) {
         this.file = file;
