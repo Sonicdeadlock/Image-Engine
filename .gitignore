@@ -1,6 +1,11 @@
 bin/
+out/
+data
 .idea/
 *.class
 *.swp
 *.iml
 *.tsv
+
+META-INF/
+src/META-INF/

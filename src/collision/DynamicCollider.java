@@ -29,7 +29,7 @@ public abstract class DynamicCollider extends Collider implements Motionable {
     }
 
     @Override
-    protected boolean hasCollisionAtPoint(Point p) {
+    public boolean hasCollisionAtPoint(Point p) {
         return globalPointIsTaken(p);
     }
 
@@ -68,4 +68,11 @@ public abstract class DynamicCollider extends Collider implements Motionable {
     public void moveTo(Point p) {
         this.setPoint(p);
     }
+
+    public abstract CollisionDetails hasCollision(Collider c);
+
+    public void init(){
+        renderTakenPoints();
+    }
+
 }

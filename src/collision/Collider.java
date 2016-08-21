@@ -58,7 +58,6 @@ public abstract class Collider implements Placeable {
         this.direction = direction;
     }
 
-    public abstract CollisionDetails hasCollision(Collider c);
 
     public abstract boolean hasCollisionAtPoint(Point p);
 
