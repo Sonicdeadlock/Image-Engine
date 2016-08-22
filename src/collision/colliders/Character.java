@@ -3,10 +3,12 @@ package collision.colliders;
 import collision.Collider;
 import collision.CollisionDetails;
 import collision.DynamicCollider;
-import collision.spatial.Direction;
+import collision.spatial.*;
+import collision.spatial.Point;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 /**
  * Created by Alex on 8/21/2016.
@@ -101,6 +103,22 @@ public class Character extends DynamicCollider {
 
     @Override
     public CollisionDetails hasCollision(Collider c) {
+        for (int x = 0; x < localTakenPoints.length; x++) {
+            for (int y = 0; y < localTakenPoints[0].length; y++) {
+                if(c.hasCollisionAtPoint(new Point(x,y))){
+                    Vector v;
+                    if(c instanceof DynamicCollider){
+                        v = Vector.subtract(this.getVelocity(),((DynamicCollider) c).getVelocity());
+                    }else{
+                        v = this.getVelocity();
+                    }
+                    ArrayList<Collider> list = new ArrayList<>();
+                    list.add(this);
+                    list.add(c);
+                    CollisionDetails details = new CollisionDetails(v,list);
+                }
+            }
+        }
         return null;
     }
 }

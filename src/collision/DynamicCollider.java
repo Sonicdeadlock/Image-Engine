@@ -10,7 +10,7 @@ import collision.spatial.Vector;
  */
 public abstract class DynamicCollider extends Collider implements Motionable {
     protected boolean[][] localTakenPoints;
-    private double velocityX=0,velocityY=0;
+    private Vector velocity;
 
 
     public DynamicCollider(int x, int y, Direction direction) {
@@ -35,28 +35,20 @@ public abstract class DynamicCollider extends Collider implements Motionable {
 
     protected abstract void renderTakenPoints();
 
-    @Override
-    public double getXVelocity() {
-        return velocityX;
-    }
 
     @Override
-    public double getYVelocity() {
-        return velocityY;
+    public Vector getVelocity() {
+        return velocity;
     }
 
-    public void setXVelocity(double velocityX) {
-        this.velocityX = velocityX;
-    }
-
-    public void setYVelocity(double velocityY) {
-        this.velocityY = velocityY;
+    @Override
+    public void setVelocity(Vector velocity) {
+        this.velocity = velocity;
     }
 
     @Override
     public void accelerate(Vector v) {
-        this.velocityX+=v.getX();
-        this.velocityY+=v.getY();
+       this.velocity = Vector.add(this.velocity,v);
     }
 
     @Override
