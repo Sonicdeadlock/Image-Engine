@@ -108,7 +108,7 @@ public class DebugImagePartProcessor extends ImagePartProcessor{
     }
 
     private boolean[][] intToBoolArray(int number){
-        int gridSize = Settings.getCharImageSize()/Settings.getPRECISION();
+        int gridSize = Settings.getCharImageWidth()/Settings.getPRECISION();
         boolean[][] grid = new boolean[gridSize][gridSize];
         for (int i = 0; i < gridSize * gridSize; i++) {
             int x = i/gridSize;

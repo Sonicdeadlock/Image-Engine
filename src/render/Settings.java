@@ -6,7 +6,8 @@ import java.io.File;
 
 public class Settings {
     private static final int PRECISION =2;
-    private static final int CHAR_IMAGE_SIZE=8;
+    private static final int CHAR_IMAGE_WIDTH =8;
+    private static final int CHAR_IMAGE_HEIGHT =18;
     private double tolerance;
     private static final Font FONT = new Font("Courier New", Font.PLAIN,11);
     private int charRange = 150;
@@ -57,8 +58,12 @@ public class Settings {
         return PRECISION;
     }
 
-    public static int getCharImageSize() {
-        return CHAR_IMAGE_SIZE;
+    public static int getCharImageWidth() {
+        return CHAR_IMAGE_WIDTH;
+    }
+
+    public static int getCharImageHeight() {
+        return CHAR_IMAGE_HEIGHT;
     }
 
     public double getTolerance() {

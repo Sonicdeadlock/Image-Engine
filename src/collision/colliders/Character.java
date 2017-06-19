@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class Character extends DynamicCollider {
     private char character;
     private Font font;
-    private Color RENDER_FOREGROUND_COLOR = Color.WHITE,RENDER_BACKGROUND_COLOR = Color.BLACK;
+    private static final Color RENDER_FOREGROUND_COLOR = Color.WHITE,RENDER_BACKGROUND_COLOR = Color.BLACK;
     public Character(int x, int y, Direction direction,char character) {
         super(x, y, direction);
         this.character = character;
@@ -47,6 +47,7 @@ public class Character extends DynamicCollider {
                 localTakenPoints[x][y] = bi.getRGB(x,y)==RENDER_FOREGROUND_COLOR.getRGB();
             }
         }
+        removeSelfUnnecessaryEdges();
     }
 
     private BufferedImage getCharacterRenderedOnImage(){
@@ -116,9 +117,22 @@ public class Character extends DynamicCollider {
                     list.add(this);
                     list.add(c);
                     CollisionDetails details = new CollisionDetails(v,list);
+                    return details;
                 }
             }
         }
         return null;
+    }
+
+    public Font getFont() {
+        return font;
+    }
+
+    public void setFont(Font font) {
+        this.font = font;
+    }
+
+    public char getCharacter() {
+        return character;
     }
 }

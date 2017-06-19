@@ -16,31 +16,31 @@ public class ImageToAsciiText {
     }
 
     public String processText(BufferedImage bi){
-        StringBuilder sb = new StringBuilder(bi.getHeight()*bi.getWidth()/Settings.getCharImageSize()+bi.getWidth()/Settings.getCharImageSize());
-        for(int y=0;y<bi.getHeight();y+=Settings.getCharImageSize()){
-            for(int x=0;x<bi.getWidth();x+=Settings.getCharImageSize()){
+        StringBuilder sb = new StringBuilder(bi.getHeight()*bi.getWidth()/Settings.getCharImageWidth()+bi.getWidth()/Settings.getCharImageWidth());
+        for(int y=0;y<bi.getHeight();y+=Settings.getCharImageHeight()){
+            for(int x=0;x<bi.getWidth();x+=Settings.getCharImageWidth()){
                 try{
                     int value;
                     int blockX = x,
                             blockY = y,
-                            blockWidth = Settings.getCharImageSize(),
-                            blockHeight = Settings.getCharImageSize();
-                    if(x>=Settings.getCharImageSize()){
-                        blockX-=Settings.getCharImageSize();
-                        blockWidth+=Settings.getCharImageSize();
+                            blockWidth = Settings.getCharImageWidth(),
+                            blockHeight = Settings.getCharImageWidth();
+                    if(x>=Settings.getCharImageWidth()){
+                        blockX-=Settings.getCharImageWidth();
+                        blockWidth+=Settings.getCharImageWidth();
                     }
-                    if(x+Settings.getCharImageSize()<bi.getWidth()){
-                        blockWidth+=Settings.getCharImageSize();
+                    if(x+Settings.getCharImageWidth()<bi.getWidth()){
+                        blockWidth+=Settings.getCharImageWidth();
                     }
-                    if(y>Settings.getCharImageSize()){
-                        blockY-=Settings.getCharImageSize();
-                        blockHeight+=Settings.getCharImageSize();
+                    if(y>Settings.getCharImageHeight()){
+                        blockY-=Settings.getCharImageHeight();
+                        blockHeight+=Settings.getCharImageHeight();
                     }
-                    if(y+Settings.getCharImageSize()+1<bi.getHeight()){
-                        blockHeight+=Settings.getCharImageSize();
+                    if(y+Settings.getCharImageHeight()+1<bi.getHeight()){
+                        blockHeight+=Settings.getCharImageHeight();
                     }
                     double averageLuminance = LuminanceCalculator.calculateLuminance(bi.getSubimage(blockX,blockY,blockWidth,blockHeight));
-                    value = BitwiseCalculator.calculateBitwize(bi.getSubimage(x, y, Settings.getCharImageSize(), Settings.getCharImageSize()),averageLuminance,settings);
+                    value = BitwiseCalculator.calculateBitwize(bi.getSubimage(x, y, Settings.getCharImageWidth(), Settings.getCharImageHeight()),averageLuminance,settings);
                     char c = settings.getCharacterSet().getMatch(value);
                     if(value!=0)
                         sb.append(c);

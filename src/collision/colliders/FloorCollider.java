@@ -18,11 +18,11 @@ public class FloorCollider extends Collider {
 
     }
 
-    @Override
-    public CollisionDetails hasCollision(Collider c) {
-        return c.hasCollision(this);
-    }
-
+//    @Override
+//    public CollisionDetails hasCollision(Collider c) {
+//        return c.hasCollision(this);
+//    }
+//
     @Override
     public boolean hasCollisionAtPoint(Point p) {
         return (p.getY()==this.y);

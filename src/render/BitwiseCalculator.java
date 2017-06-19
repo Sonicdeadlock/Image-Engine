@@ -9,14 +9,14 @@ import java.awt.image.BufferedImage;
 public class BitwiseCalculator {
 
     public static int  calculateBitwize(char c,Settings settings){
-        BufferedImage bi  = new BufferedImage(Settings.getCharImageSize(),Settings.getCharImageSize(),BufferedImage.TYPE_INT_RGB);
+        BufferedImage bi  = new BufferedImage(Settings.getCharImageWidth(),Settings.getCharImageWidth(),BufferedImage.TYPE_INT_RGB);
         Graphics g = bi.getGraphics();
         drawCenterChar(g, c);
 
         return calculateBitwize(bi,settings);
     }
     public static int  calculateBitwize(char c,double tolerance){
-        BufferedImage bi  = new BufferedImage(Settings.getCharImageSize(),Settings.getCharImageSize(),BufferedImage.TYPE_INT_RGB);
+        BufferedImage bi  = new BufferedImage(Settings.getCharImageWidth(),Settings.getCharImageWidth(),BufferedImage.TYPE_INT_RGB);
         Graphics g = bi.getGraphics();
         drawCenterChar(g, c);
 
@@ -38,8 +38,8 @@ public class BitwiseCalculator {
     public static int calculateBitwize(BufferedImage bi, double averageLuminance,double tolerance ){
         int value=0;
         int index=0;
-        for(int x=0;x<Settings.getCharImageSize();x+=Settings.getPRECISION()){
-            for(int y=0;y<Settings.getCharImageSize();y+=Settings.getPRECISION()){
+        for(int x = 0; x<Settings.getCharImageWidth(); x+=Settings.getPRECISION()){
+            for(int y = 0; y<Settings.getCharImageWidth(); y+=Settings.getPRECISION()){
                 double luminance = LuminanceCalculator.calculateLuminance(bi.getSubimage(x,y,Settings.getPRECISION(),Settings.getPRECISION()));
                 if(Math.abs(luminance-averageLuminance)/averageLuminance>tolerance){
                     value = value | 1 << index;
@@ -56,10 +56,10 @@ public class BitwiseCalculator {
         String s ="";
         s+=c;
         g.setColor(Color.white);
-        g.fillRect(0, 0, Settings.getCharImageSize(), Settings.getCharImageSize());
+        g.fillRect(0, 0, Settings.getCharImageWidth(), Settings.getCharImageWidth());
         g.setFont(Settings.getFONT());
         g.setColor(Color.black);
-        g.drawString(s, 0, Settings.getCharImageSize());
+        g.drawString(s, 0, Settings.getCharImageWidth());
     }
 
 

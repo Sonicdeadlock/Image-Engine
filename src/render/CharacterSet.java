@@ -30,8 +30,8 @@ public class CharacterSet {
 
     public CharacterSet(char[] charArray,double tolerance){
         this.tolerance = tolerance;
-        characterTable = new char[(int)Math.pow(2,(Settings.getCharImageSize()*Settings.getCharImageSize())/(Settings.getPRECISION()*Settings.getPRECISION()))];
-        setValues= new boolean[(int)Math.pow(2,(Settings.getCharImageSize()*Settings.getCharImageSize())/(Settings.getPRECISION()*Settings.getPRECISION()))];
+        characterTable = new char[(int)Math.pow(2,(Settings.getCharImageWidth()*Settings.getCharImageWidth())/(Settings.getPRECISION()*Settings.getPRECISION()))];
+        setValues= new boolean[(int)Math.pow(2,(Settings.getCharImageWidth()*Settings.getCharImageWidth())/(Settings.getPRECISION()*Settings.getPRECISION()))];
 
         for(char c : charArray){
            addCharacter(c);
@@ -138,7 +138,7 @@ public class CharacterSet {
         int difference=0;
         do{
             subVal=value;
-            ArrayList<Integer> masks = MaskGenerator.getMasks((Settings.getCharImageSize()*Settings.getCharImageSize())/(Settings.getPRECISION()*Settings.getPRECISION()),difference); //get masks to alter the bitwise value
+            ArrayList<Integer> masks = MaskGenerator.getMasks((Settings.getCharImageWidth()*Settings.getCharImageWidth())/(Settings.getPRECISION()*Settings.getPRECISION()),difference); //get masks to alter the bitwise value
             for (int mask : masks){
                 subVal=value ^ mask;
                 if(setValues[value ^ mask]){

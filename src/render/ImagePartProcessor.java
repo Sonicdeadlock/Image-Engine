@@ -35,35 +35,35 @@ public class ImagePartProcessor extends Thread{
 //		else
 //			g.setColor(Color.white);
         g.fillRect(xStart, yStart, xLength, yLength);
-        for(int x=xStart;x<xLength;x+=Settings.getCharImageSize()){
-            for(int y=yStart;y<yLength;y+=Settings.getCharImageSize()){
+        for(int x=xStart;x<xLength;x+=Settings.getCharImageWidth()){
+            for(int y=yStart;y<yLength;y+=Settings.getCharImageHeight()){
                 try{
                     int value;
                     if(settings.isUseColor()){
-                        Color avg = getAverageColor(image.getSubimage(x, y, Settings.getCharImageSize(), Settings.getCharImageSize()));
-                        value = BitwiseCalculator.calculateBitwize(image.getSubimage(x, y, Settings.getCharImageSize(), Settings.getCharImageSize()),settings);
+                        Color avg = getAverageColor(image.getSubimage(x, y, Settings.getCharImageWidth(), Settings.getCharImageHeight()));
+                        value = BitwiseCalculator.calculateBitwize(image.getSubimage(x, y, Settings.getCharImageWidth(), Settings.getCharImageHeight()),settings);
                         g.setColor(avg);
                     }else{
                         int blockX = x,
                                 blockY = y,
-                                blockWidth = Settings.getCharImageSize(),
-                                blockHeight = Settings.getCharImageSize();
-                        if(x>=Settings.getCharImageSize()){
-                            blockX-=Settings.getCharImageSize();
-                            blockWidth+=Settings.getCharImageSize();
+                                blockWidth = Settings.getCharImageWidth(),
+                                blockHeight = Settings.getCharImageHeight();
+                        if(x>=Settings.getCharImageWidth()){
+                            blockX-=Settings.getCharImageWidth();
+                            blockWidth+=Settings.getCharImageWidth();
                         }
-                        if(x+Settings.getCharImageSize()<xLength){
-                            blockWidth+=Settings.getCharImageSize();
+                        if(x+Settings.getCharImageWidth()<xLength){
+                            blockWidth+=Settings.getCharImageWidth();
                         }
-                        if(y>Settings.getCharImageSize()){
-                            blockY-=Settings.getCharImageSize();
-                            blockHeight+=Settings.getCharImageSize();
+                        if(y>Settings.getCharImageHeight()){
+                            blockY-=Settings.getCharImageHeight();
+                            blockHeight+=Settings.getCharImageHeight();
                         }
-                        if(y+Settings.getCharImageSize()+1<yLength){
-                            blockHeight+=Settings.getCharImageSize();
+                        if(y+Settings.getCharImageHeight()+1<yLength){
+                            blockHeight+=Settings.getCharImageHeight();
                         }
                         double averageLuminance = LuminanceCalculator.calculateLuminance(image.getSubimage(blockX,blockY,blockWidth,blockHeight));
-                        value = BitwiseCalculator.calculateBitwize(image.getSubimage(x, y, Settings.getCharImageSize(), Settings.getCharImageSize()),averageLuminance,settings);
+                        value = BitwiseCalculator.calculateBitwize(image.getSubimage(x, y, Settings.getCharImageWidth(), Settings.getCharImageHeight()),averageLuminance,settings);
                         g.setColor(Color.white);
                     }
 
@@ -71,7 +71,7 @@ public class ImagePartProcessor extends Thread{
 
 
 
-                    pixesRendered+=Settings.getCharImageSize()*Settings.getCharImageSize();
+                    pixesRendered+=Settings.getCharImageWidth()*Settings.getCharImageWidth();
                 }catch(Exception ex){
 					//ex.printStackTrace();
                 }
